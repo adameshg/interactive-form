@@ -185,12 +185,27 @@ function paymentValidator() {
     const cvvIsValid = /^\d{3}$/.test(cvv.value);
     if (creditcardOption.selected && cardIsValid && zipIsValid && cvvIsValid) {
         validationPass(paymentMethodBox);
-    } else if (!cardIsValid) {
+    } 
+    
+    if (!cardIsValid) {
         validationFail(card);
-    } else if (!zipIsValid) {
+    } else {
+        card.parentNode.classList.remove('not-valid');
+        card.parentElement.lastElementChild.classList.add('hint');
+    }
+    
+    if (!zipIsValid) {
         validationFail(zip);
-    } else if (!cvvIsValid) {
+    } else {
+        zip.parentNode.classList.remove('not-valid');
+        zip.parentElement.lastElementChild.classList.add('hint');
+    }
+    
+    if (!cvvIsValid) {
         validationFail(cvv);
+    } else {
+        cvv.parentNode.classList.remove('not-valid');
+        cvv.parentElement.lastElementChild.classList.add('hint');
     }
 }
 
