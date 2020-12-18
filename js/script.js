@@ -174,6 +174,16 @@ function activitiesValidator() {
     return activitiesSectionIsValid;
 }
 
+// Helper function to show/hide hint for payment field
+function paymentFieldHint (valid, field) {
+    if (!valid) {
+        validationFail(field);
+    } else {
+        field.parentNode.classList.remove('not-valid');
+        field.parentElement.lastElementChild.classList.add('hint');
+    }
+}
+
 // Validates payment section
 function paymentValidator() {
     const card = document.querySelector('#cc-num');
@@ -187,26 +197,9 @@ function paymentValidator() {
         validationPass(paymentMethodBox);
     } 
     
-    if (!cardIsValid) {
-        validationFail(card);
-    } else {
-        card.parentNode.classList.remove('not-valid');
-        card.parentElement.lastElementChild.classList.add('hint');
-    }
-    
-    if (!zipIsValid) {
-        validationFail(zip);
-    } else {
-        zip.parentNode.classList.remove('not-valid');
-        zip.parentElement.lastElementChild.classList.add('hint');
-    }
-    
-    if (!cvvIsValid) {
-        validationFail(cvv);
-    } else {
-        cvv.parentNode.classList.remove('not-valid');
-        cvv.parentElement.lastElementChild.classList.add('hint');
-    }
+    paymentFieldHint(cardIsValid, card);
+    paymentFieldHint(zipIsValid, zip);
+    paymentFieldHint(cvvIsValid, cvv);
 }
 
 // TODO: Add real-time validation
