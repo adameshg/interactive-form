@@ -15,6 +15,7 @@ const price = document.querySelectorAll('[data-cost]');
 const cost = document.getElementById('activities-cost');
 let totalPrice = 0;
 let totalActivities = 0;
+const checkboxes = document.querySelectorAll('[type="checkbox"]');
 const paymentSelectElement = document.getElementById('payment');
 const paymentOptionElements = document.querySelectorAll('#payment option');
 const creditcardOption = document.querySelector('[value="credit-card"]');
@@ -29,7 +30,7 @@ name.focus();
 jobOptionOther.classList.add('hidden');
 
 /* Displays 'Other job role' textbox when 'Other' option is selected and
-hides it when it isn't selected */
+hides it when not selected */
 jobSelectElement.addEventListener('change', e => {
     if (e.target.value === 'other') {
         jobOptionOther.classList.remove('hidden');
@@ -80,16 +81,6 @@ activities.addEventListener('change', e => {
         totalPrice -= parseInt(e.target.getAttribute('data-cost'));
     }
     cost.innerHTML = `Total: $${totalPrice}`;
-    
-    /* TODO: Set document.querySelector('[name="INSERT NAME"]').disabled = true
-    and the parent label's class to '.disabled' if times overlap */
-    // for (let i = 0; i < activityLabels.length; i++) {
-    //     if (activityLabels[i].children[2].innerHTML === selectedActivityTime) {
-    //         console.log(true);
-    //     }
-    // }
-
-    // console.log(e.target.getAttribute('data-day-and-time'));
 })
 
 // Sets default payment to 'Credit Card'
@@ -174,6 +165,7 @@ function activitiesValidator() {
 
 // Validates payment section
 function paymentValidator() {
+    let paymentSectionIsValid;
     const card = document.querySelector('#cc-num');
     const zip = document.querySelector('#zip');
     const cvv = document.querySelector('#cvv');
@@ -181,16 +173,26 @@ function paymentValidator() {
     const cardIsValid = /^\d{13,16}$/.test(card.value);
     const zipIsValid = /^\d{5}$/.test(zip.value);
     const cvvIsValid = /^\d{3}$/.test(cvv.value);
+    const paypalOption = document.querySelector('[value="paypal"]');
+    const bitcoinOption = document.querySelector('[value="bitcoin"]');
+    
     if (creditcardOption.selected && cardIsValid && zipIsValid && cvvIsValid) {
         validationPass(paymentMethodBox);
-    } 
-    
+        paymentSectionIsValid = true;
+    } else {
+        paymentSectionIsValid = false;
+    }
+
+    if (paypalOption.selected || bitcoinOption.selected) {
+        paymentSectionIsValid = true;
+    }
+
     showOrHideHint(cardIsValid, card);
     showOrHideHint(zipIsValid, zip);
     showOrHideHint(cvvIsValid, cvv);
-}
 
-// TODO: Add real-time validation
+    return paymentSectionIsValid;
+}
 
 // Enables/prevents form submission pending validation
 form.addEventListener('submit', e => {
@@ -213,4 +215,14 @@ form.addEventListener('submit', e => {
         console.log('Invalid submission: payment');
         e.preventDefault();
     }
+})
+
+// Add focus styling to label upon focus/blur of child checkbox input
+checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('focus', e => {
+        e.target.parentElement.classList.add('focus');
+    })
+    checkbox.addEventListener('blur', e => {
+        e.target.parentElement.classList.remove('focus');
+    })
 })
