@@ -131,25 +131,27 @@ function validationFail(element) {
     element.parentElement.lastElementChild.classList.remove('hint');
 }
 
+// Helper function to show/hide hint for payment field
+function showOrHideHint (valid, field) {
+    if (!valid) {
+        validationFail(field);
+    } else {
+        field.parentNode.classList.remove('not-valid');
+        field.parentElement.lastElementChild.classList.add('hint');
+    }
+}
+
 // Validates name input
 function nameValidator() {
     const nameIsValid = /^[a-zA-Z]+ ?[a-zA-Z]*? ?[a-zA-Z]*?$/.test(name.value);
-    if (nameIsValid) {
-        validationPass(name);
-    } else {
-        validationFail(name);
-    }
+    showOrHideHint(nameIsValid, name);
     return nameIsValid;
 }
 
 // Validates email input
 function emailValidator() {
     const emailIsValid = /^[^@]+@[^@.]+\.[a-z]+$/i.test(email.value);
-    if (emailIsValid) {
-        validationPass(email);
-    } else {
-        validationFail(email);
-    }
+    showOrHideHint(emailIsValid, email);
     return emailIsValid;
 }
 
@@ -166,22 +168,8 @@ activities.addEventListener('change', e => {
 function activitiesValidator() {
     const activitiesSectionIsValid = totalActivities > 0;
     const activitiesBox = document.querySelector('#activities-box');
-    if (activitiesSectionIsValid) {
-        validationPass(activitiesBox);
-    } else {
-        validationFail(activitiesBox);
-    }
+    showOrHideHint(activitiesSectionIsValid, activitiesBox);
     return activitiesSectionIsValid;
-}
-
-// Helper function to show/hide hint for payment field
-function paymentFieldHint (valid, field) {
-    if (!valid) {
-        validationFail(field);
-    } else {
-        field.parentNode.classList.remove('not-valid');
-        field.parentElement.lastElementChild.classList.add('hint');
-    }
 }
 
 // Validates payment section
@@ -197,9 +185,9 @@ function paymentValidator() {
         validationPass(paymentMethodBox);
     } 
     
-    paymentFieldHint(cardIsValid, card);
-    paymentFieldHint(zipIsValid, zip);
-    paymentFieldHint(cvvIsValid, cvv);
+    showOrHideHint(cardIsValid, card);
+    showOrHideHint(zipIsValid, zip);
+    showOrHideHint(cvvIsValid, cvv);
 }
 
 // TODO: Add real-time validation
