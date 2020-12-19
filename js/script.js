@@ -128,6 +128,7 @@ function showOrHideHint (valid, field) {
         validationFail(field);
     } else {
         field.parentNode.classList.remove('not-valid');
+        field.parentNode.classList.add('valid');
         field.parentElement.lastElementChild.classList.add('hint');
     }
 }
