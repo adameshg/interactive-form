@@ -69,18 +69,35 @@ designSelectElement.addEventListener('change', e => {
     }
 })
 
+/* Helper function to disable checkboxes of activities with overlapping
+schedules */
+function scheduleOverlap(e, time) {
+    document.querySelectorAll(`[data-day-and-time="${time}"]`).forEach(box => {
+        const selectedActivityTime = e.target.getAttribute('data-day-and-time');
+        if (selectedActivityTime === box.getAttribute('data-day-and-time') && e.target !== box) {
+            if (e.target.checked) {
+                box.disabled = true;
+                box.parentElement.classList.add('disabled');
+            } else {
+                box.disabled = false;
+                box.parentElement.classList.remove('disabled');
+            }
+        }
+    })
+}
+
 /* Adds/subtracts price of checked/unchecked activity to total and
-displays total */
+displays total; disables overlapping activity checkboxes */
 activities.addEventListener('change', e => {
-    const activityLabels = document.getElementById('activities-box').children;
-    const selectedActivityTime = e.target.getAttribute('data-day-and-time');
-    const allActivityTimes = document.querySelectorAll('[data-day-and-time]');
     if (e.target.checked) {
         totalPrice += parseInt(e.target.getAttribute('data-cost'));
     } else {
         totalPrice -= parseInt(e.target.getAttribute('data-cost'));
     }
     cost.innerHTML = `Total: $${totalPrice}`;
+   
+    scheduleOverlap(e, 'Tuesday 9am-12pm');
+    scheduleOverlap(e, 'Tuesday 1pm-4pm');
 })
 
 // Sets default payment to 'Credit Card'
