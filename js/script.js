@@ -22,6 +22,9 @@ const creditcardOption = document.querySelector('[value="credit-card"]');
 const creditcard = document.getElementById('credit-card');
 const paypal = document.getElementById('paypal');
 const bitcoin = document.getElementById('bitcoin');
+const card = document.querySelector('#cc-num');
+const zip = document.querySelector('#zip');
+const cvv = document.querySelector('#cvv');
 
 // Sets default focus to 'name' input box
 name.focus();
@@ -184,9 +187,6 @@ function activitiesValidator() {
 // Validates payment section
 function paymentValidator() {
     let paymentSectionIsValid;
-    const card = document.querySelector('#cc-num');
-    const zip = document.querySelector('#zip');
-    const cvv = document.querySelector('#cvv');
     const paymentMethodBox = document.querySelector('.payment-method-box');
     const cardIsValid = /^\d{13,16}$/.test(card.value);
     const zipIsValid = /^\d{5}$/.test(zip.value);
@@ -211,6 +211,14 @@ function paymentValidator() {
 
     return paymentSectionIsValid;
 }
+
+// Enables real-time input validation
+name.addEventListener('keyup', nameValidator);
+email.addEventListener('keyup', emailValidator);
+activities.addEventListener('change', activitiesValidator);
+card.addEventListener('keyup', paymentValidator);
+zip.addEventListener('keyup', paymentValidator);
+cvv.addEventListener('keyup', paymentValidator);
 
 // Enables/prevents form submission pending validation
 form.addEventListener('submit', e => {
