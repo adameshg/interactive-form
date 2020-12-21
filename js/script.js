@@ -38,7 +38,6 @@ jobSelectElement.addEventListener('change', e => {
     if (e.target.value === 'other') {
         jobOptionOther.classList.remove('hidden');
         jobOptionOther.value = '';
-        
     } else {
         jobOptionOther.classList.add('hidden');
     }
@@ -67,8 +66,10 @@ attribute of corresponding color options */
 designSelectElement.addEventListener('change', e => {
     if (e.target.value === 'js puns') {
         showColor(e, jsPuns, heartJs);
+        colorOptionElements[1].selected = true;
     } else if (e.target.value === 'heart js') {
         showColor(e, heartJs, jsPuns);
+        colorOptionElements[4].selected = true;
     }
 })
 
